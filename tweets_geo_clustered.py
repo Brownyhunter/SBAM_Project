@@ -27,14 +27,31 @@ x['kmeans_label'] = kmeans.fit_predict(x[x.columns[1:3]])
 centers = kmeans.cluster_centers_ # Coordinates of cluster centers.
 labels = kmeans.predict(x[x.columns[1:3]]) # Labels of each point
 
-#visualize
-x.plot.scatter(x = 'long', y = 'lat', c=labels, s=50, cmap='viridis')
-plt.scatter(centers[:, 1], centers[:, 0], c='black', s=200, alpha=0.5)
-plt.show()
+# #visualize
+# x.plot.scatter(x = 'long', y = 'lat', c=labels, s=50, cmap='viridis')
+# plt.scatter(centers[:, 1], centers[:, 0], c='black', s=200, alpha=0.5)
+# plt.show()
 
 x_dist = kmeans.transform(x[x.columns[1:3]])
 print(x_dist[0])
 
+
 x = x[['id','kmeans_label']]
 clustered_data = tweets.merge(x, left_on='id', right_on='id')
-#print(clustered_data.head())
+print(centers)
+
+u=1
+for i in centers:
+    z = pd.DataFrame({"id": u,"lat": [i[0]], "long": i[1]})
+    clustered_data = pd.concat([clustered_data, z], ignore_index=True)
+    u += 1
+
+clustered_data['dist_to_centroid'] = np.nan
+t = 0
+for i in clustered_data:
+    clustered_data.at[t,'dist_to_centroid'] = min(x_dist[t])
+    t += 1
+
+print(clustered_data.head())
+
+clustered_data.to_csv('tweets_labeled.csv', encoding='utf-8',index=False, sep=',')
