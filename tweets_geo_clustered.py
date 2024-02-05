@@ -35,7 +35,6 @@ labels = kmeans.predict(x[x.columns[1:3]]) # Labels of each point
 x_dist = kmeans.transform(x[x.columns[1:3]])
 print(x_dist[0])
 
-
 x = x[['id','kmeans_label']]
 clustered_data = tweets.merge(x, left_on='id', right_on='id')
 print(centers)
@@ -53,5 +52,35 @@ for i in clustered_data:
     t += 1
 
 print(clustered_data.head())
+
+
+## centroid for sentiments
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [10],"sentiment": [-1]})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [11],"sentiment": [-0.7]})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [12],"sentiment": [0]})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [13],"sentiment": [0.7]})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [14],"sentiment": [1]})], ignore_index=True)
+
+print(clustered_data.dtypes)
+
+#create edge table
+edges = pd.DataFrame(columns=['Source', 'Target', 'Type'])
+for i,row in clustered_data.iterrows():
+    if row["sentiment"] < -0.7:
+        target = 10
+    elif row["sentiment"] >= -0.7 and row["sentiment"] < -0.3:
+        target = 11
+    elif row["sentiment"] > -0.3 and row["sentiment"] < 0.3:
+        target = 12
+    elif row["sentiment"] > 0.3 and row["sentiment"] <= 0.7:
+        target = 13
+    elif row["sentiment"] > 0.7:
+        target = 14
+    z = pd.DataFrame({'Source': [row['id']], 'Target': [target], 'Type': ['Undirected']})
+    edges = pd.concat([edges, z], ignore_index=True)
+    
+print(edges)
+
+edges.to_csv('tweets_labeled_edges.csv', encoding='utf-8',index=False, sep=',')
 
 clustered_data.to_csv('tweets_labeled.csv', encoding='utf-8',index=False, sep=',')
