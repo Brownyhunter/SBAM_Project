@@ -32,8 +32,8 @@ labels = kmeans.predict(x[x.columns[1:3]]) # Labels of each point
 # plt.scatter(centers[:, 1], centers[:, 0], c='black', s=200, alpha=0.5)
 # plt.show()
 
+#array of distances of each entry to each centroid
 x_dist = kmeans.transform(x[x.columns[1:3]])
-print(x_dist[0])
 
 x = x[['id','kmeans_label']]
 clustered_data = tweets.merge(x, left_on='id', right_on='id')
@@ -41,7 +41,7 @@ print(centers)
 
 u=1
 for i in centers:
-    z = pd.DataFrame({"id": u,"lat": [i[0]], "long": i[1]})
+    z = pd.DataFrame({"id": u,"lat": [i[0]], "long": [i[1]], "full_text": ['Centroid ' + str(u)]})
     clustered_data = pd.concat([clustered_data, z], ignore_index=True)
     u += 1
 
@@ -55,11 +55,11 @@ print(clustered_data.head())
 
 
 ## centroid for sentiments
-clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [10],"sentiment": [-1]})], ignore_index=True)
-clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [11],"sentiment": [-0.7]})], ignore_index=True)
-clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [12],"sentiment": [0]})], ignore_index=True)
-clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [13],"sentiment": [0.7]})], ignore_index=True)
-clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [14],"sentiment": [1]})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [10],"sentiment": [-1], 'full_text': ['Negative']})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [11],"sentiment": [-0.7], 'full_text': ['Semi negative']})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [12],"sentiment": [0], 'full_text': ['Neutral']})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [13],"sentiment": [0.7], 'full_text': ['Semi positive']})], ignore_index=True)
+clustered_data = pd.concat([clustered_data, pd.DataFrame({"id": [14],"sentiment": [1], 'full_text': ['Positive']})], ignore_index=True)
 
 print(clustered_data.dtypes)
 
@@ -78,9 +78,18 @@ for i,row in clustered_data.iterrows():
         target = 14
     z = pd.DataFrame({'Source': [row['id']], 'Target': [target], 'Type': ['Undirected']})
     edges = pd.concat([edges, z], ignore_index=True)
-    
-print(edges)
 
-edges.to_csv('tweets_labeled_edges.csv', encoding='utf-8',index=False, sep=',')
+
+edges.to_csv('tweets_labeled_edges_sentiment.csv', encoding='utf-8',index=False, sep=',')
+
+#create edge table for geolocation
+geo_edges = pd.DataFrame(columns=['Source', 'Target', 'Type', 'Weight'])
+for i,row in clustered_data.iterrows():
+    if i < 5000:
+        target = x_dist[i].argmin() + 1
+        z = pd.DataFrame({'Source': [row['id']], 'Target': [target], 'Type': ['Undirected'], 'Weight': [1/min(x_dist[i])]})
+        geo_edges = pd.concat([geo_edges, z], ignore_index=True)
+
+geo_edges.to_csv('tweets_labeled_edges_geo.csv', encoding='utf-8',index=False, sep=',')
 
 clustered_data.to_csv('tweets_labeled.csv', encoding='utf-8',index=False, sep=',')
