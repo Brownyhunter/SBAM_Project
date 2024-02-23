@@ -13,11 +13,11 @@ tweets['created_at'] = pd.to_datetime(tweets.created_at)
 
 #reduce data set from ~183000 to under 5000
 #remove tweets that have not been retweeted
-#tweets_w_retweets = tweets.loc[tweets['retweet_count'] != 0]
+tweets_w_retweets = tweets.loc[tweets['retweet_count'] != 0]
 
 #remove rows with missing values
-#tweets_w_retweets = tweets_w_retweets.dropna()
-tweets_w_retweets = tweets.dropna()
+tweets_w_retweets = tweets_w_retweets.dropna()
+#tweets_w_retweets = tweets.dropna()
 
 #add columns for latitude and longitude of location
 locations = locations.rename(columns={'name': 'user_location'})
