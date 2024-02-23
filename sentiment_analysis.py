@@ -5,7 +5,7 @@ import pandas as pd
 """sentiment analysis on the tweets using the RoBERTa model"""
 
 #load csv into pandas data frame
-tweets = pd.read_csv('tweets_prep2.csv', sep=',',parse_dates=['created_at'])
+tweets = pd.read_csv('tweets_prep_wo_rt.csv', sep=',',parse_dates=['created_at'])
 
 #list of the text of each tweet
 list_of_tweets = []
@@ -56,4 +56,4 @@ for i in range(len(tweets)):
 
 tweets['sentiment'] = tweets['pos'] - tweets['neg']
 
-tweets.to_csv('tweets_prep_sentiment2.csv', encoding='utf-8',index=False, sep=',')
+tweets.to_csv('tweets_prep_sentiment_wo_rt.csv', encoding='utf-8',index=False, sep=',')

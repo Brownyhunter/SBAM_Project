@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-tweets = pd.read_csv('tweets_prep_sentiment2.csv', sep=',',parse_dates=['created_at'])
+tweets = pd.read_csv('tweets_prep_sentiment_wo_rt.csv', sep=',',parse_dates=['created_at'])
 
 #decrease to relevant columns
 x=tweets.loc[:,['id','lat','long']]
@@ -80,7 +80,7 @@ for i,row in clustered_data.iterrows():
     edges = pd.concat([edges, z], ignore_index=True)
 
 
-edges.to_csv('tweets_labeled_edges_sentiment2.csv', encoding='utf-8',index=False, sep=',')
+edges.to_csv('tweets_labeled_edges_sentiment_wo_rt.csv', encoding='utf-8',index=False, sep=',')
 
 #create edge table for geolocation
 geo_edges = pd.DataFrame(columns=['Source', 'Target', 'Type', 'Weight'])
@@ -90,6 +90,6 @@ for i,row in clustered_data.iterrows():
         z = pd.DataFrame({'Source': [row['id']], 'Target': [target], 'Type': ['Undirected'], 'Weight': [1/min(x_dist[i])]})
         geo_edges = pd.concat([geo_edges, z], ignore_index=True)
 
-geo_edges.to_csv('tweets_labeled_edges_geo2.csv', encoding='utf-8',index=False, sep=',')
+geo_edges.to_csv('tweets_labeled_edges_geo_wo_rt.csv', encoding='utf-8',index=False, sep=',')
 
-clustered_data.to_csv('tweets_labeled2.csv', encoding='utf-8',index=False, sep=',')
+clustered_data.to_csv('tweets_labeled_wo_rt.csv', encoding='utf-8',index=False, sep=',')
