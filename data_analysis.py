@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-tweets = pd.read_csv('tweets_labeled.csv', sep=',',parse_dates=['created_at'])
+tweets = pd.read_csv('tweets_labeled3.csv', sep=',',parse_dates=['created_at'])
 
 for i,row in tweets.iterrows():
     if row["sentiment"] < -0.7:
@@ -15,9 +15,6 @@ for i,row in tweets.iterrows():
         tweets.loc[i,'sentiment_group'] = 0.3
     else:
         tweets.loc[i,'sentiment_group'] = 0.7
-
-#print(tweets)
-#print(tweets.kmeans_label.describe())
 
 #create sub-dataset for each location based on coordinates
 loc0 = tweets[tweets['kmeans_label'] == 0]
@@ -67,5 +64,3 @@ print("Percentage of negative (<-0.7) Tweets with more than 10 Retweets in " + s
 # print(len(loc4[(loc4['sentiment'] < -0.7) & (loc4['retweet_count'] > 10)])/len(loc4))
 # print(len(loc5[(loc5['sentiment'] < -0.7) & (loc5['retweet_count'] > 10)])/len(loc5))
 # print(len(loc6[(loc6['sentiment'] < -0.7) & (loc6['retweet_count'] > 10)])/len(loc6))
-
-#print(loc0.sentiment)
