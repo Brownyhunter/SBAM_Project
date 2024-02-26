@@ -14,12 +14,12 @@ kmeans = [KMeans(n_clusters=i) for i in K_clusters]
 Y_axis = x[['lat']]
 X_axis = x[['long']]
 score = [kmeans[i].fit(Y_axis).score(Y_axis) for i in range(len(kmeans))]
-# # Visualize
-# plt.plot(K_clusters, score)
-# plt.xlabel('Number of Clusters')
-# plt.ylabel('Score')
-# plt.title('Elbow Curve')
-# plt.show()
+# Visualize
+plt.plot(K_clusters, score)
+plt.xlabel('Anzahl der Cluster')
+plt.ylabel('Score')
+plt.title('Elbow Curve')
+plt.show()
 
 kmeans = KMeans(n_clusters = 7, init ='k-means++', random_state=1)
 kmeans.fit(x[x.columns[1:3]]) # Compute k-means clustering.

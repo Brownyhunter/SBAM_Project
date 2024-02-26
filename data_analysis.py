@@ -49,7 +49,7 @@ loc6['k_means_location'] = loc6.user_location.mode()[0]
 # print("Mean retweet count of " + str(loc6.iloc[0,20]) + ": " + str(loc6.retweet_count.mean()))
 
 
-print("Percentage of negative (<-0.7) Tweets with more than 10 Retweets in " + str(loc0.iloc[0,20]) +": " + str(len(loc0[(loc0['sentiment'] < -0.7) & (loc0['retweet_count'] > 10)])/len(loc0)))
+print("Percentage of negative (<-0.7) Tweets with more than 10 Retweets in " + str(loc0.iloc[0,20]) +": " +str(len(loc0[(loc0['sentiment'] < -0.7) & (loc0['retweet_count'] > 10)])/len(loc0)))
 print("Percentage of negative (<-0.7) Tweets with more than 10 Retweets in " + str(loc1.iloc[0,20]) +": " +str(len(loc1[(loc1['sentiment'] < -0.7) & (loc1['retweet_count'] > 10)])/len(loc1)))
 print("Percentage of negative (<-0.7) Tweets with more than 10 Retweets in " + str(loc2.iloc[0,20]) +": " +str(len(loc2[(loc2['sentiment'] < -0.7) & (loc2['retweet_count'] > 10)])/len(loc2)))
 print("Percentage of negative (<-0.7) Tweets with more than 10 Retweets in " + str(loc3.iloc[0,20]) +": " +str(len(loc3[(loc3['sentiment'] < -0.7) & (loc3['retweet_count'] > 10)])/len(loc3)))
