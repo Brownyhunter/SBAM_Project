@@ -64,3 +64,4 @@ print("Percentage of negative (<-0.7) Tweets with more than 10 Retweets in " + s
 # print(len(loc4[(loc4['sentiment'] < -0.7) & (loc4['retweet_count'] > 10)])/len(loc4))
 # print(len(loc5[(loc5['sentiment'] < -0.7) & (loc5['retweet_count'] > 10)])/len(loc5))
 # print(len(loc6[(loc6['sentiment'] < -0.7) & (loc6['retweet_count'] > 10)])/len(loc6))
+
